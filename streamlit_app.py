@@ -1,7 +1,7 @@
-import tomllib
-from utils import to_numeric, multiselect_all, range_from_distinct
+from utils import to_numeric, multiselect_all, range_from_distinct, render_game_thumbnail
 import streamlit as st
 import pandas as pd
+import tomllib
 
 @st.dialog("📘 Detalhes do Jogo")
 def show_game_details(r):
@@ -54,31 +54,31 @@ st.set_page_config(page_title="Metagame - Nossa biblioteca de jogos!", page_icon
 
 st.title("Bem vindo ao MetaGame - Nossa biblioteca de jogos!")
 
-st.markdown("""
+# st.markdown("""
 
-    **Categoria (`dsc_categoria`):**
-    - **Tabuleiro:** Jogos cujo foco principal é o tabuleiro.  
-    - **Cartas:** Jogos que giram em torno de cartas como elemento central.  
-    - **Dados:** Jogos baseados em rolagem de dados.
+#     **Categoria (`dsc_categoria`):**
+#     - **Tabuleiro:** Jogos cujo foco principal é o tabuleiro.  
+#     - **Cartas:** Jogos que giram em torno de cartas como elemento central.  
+#     - **Dados:** Jogos baseados em rolagem de dados.
 
-    **Subcategoria (`dsc_subcategoria`):**
-    - **Clássico:** Jogos tradicionais, com mecânicas simples.  
-    - **Cozy:** Jogos leves e divertidos para poucas pessoas.  
-    - **Dupla:** Projetados exclusivamente para duas pessoas.  
-    - **Party:** Jogos festivos e sociais, para grupos grandes.  
-    - **Eurogame:** Jogos modernos com mecânicas estratégicas e pouca sorte envolvida.  
-    - **RPG:** Jogos com narrativa ou progressão de personagem, mas sem mestre fixo.
+#     **Subcategoria (`dsc_subcategoria`):**
+#     - **Clássico:** Jogos tradicionais, com mecânicas simples.  
+#     - **Cozy:** Jogos leves e divertidos para poucas pessoas.  
+#     - **Dupla:** Projetados exclusivamente para duas pessoas.  
+#     - **Party:** Jogos festivos e sociais, para grupos grandes.  
+#     - **Eurogame:** Jogos modernos com mecânicas estratégicas e pouca sorte envolvida.  
+#     - **RPG:** Jogos com narrativa ou progressão de personagem, mas sem mestre fixo.
 
-    **Mecânica Principal (`dsc_mecanica_principal`):**
-    - **Alocação de Recursos:** Envolve gerenciar e distribuir recursos limitados.  
-    - **Apostas:** Baseados em sorte, blefe ou risco calculado.  
-    - **Deck Building:** Construção e otimização de baralhos.  
-    - **Dungeon Crawler:** Exploração de tabuleiros e combate em fases.  
-    - **Gerenciamento de Mãos:** Combinações estratégicas de cartas ou peças.  
-    - **Quebra-Cabeça:** Requer raciocínio lógico, memória ou reflexos.  
-    - **Quiz:** Perguntas e respostas como base da jogabilidade.  
-    - **Vários:** Mistura de várias mecânicas dentro de um mesmo jogo.
-    """)
+#     **Mecânica Principal (`dsc_mecanica_principal`):**
+#     - **Alocação de Recursos:** Envolve gerenciar e distribuir recursos limitados.  
+#     - **Apostas:** Baseados em sorte, blefe ou risco calculado.  
+#     - **Deck Building:** Construção e otimização de baralhos.  
+#     - **Dungeon Crawler:** Exploração de tabuleiros e combate em fases.  
+#     - **Gerenciamento de Mãos:** Combinações estratégicas de cartas ou peças.  
+#     - **Quebra-Cabeça:** Requer raciocínio lógico, memória ou reflexos.  
+#     - **Quiz:** Perguntas e respostas como base da jogabilidade.  
+#     - **Vários:** Mistura de várias mecânicas dentro de um mesmo jogo.
+#     """)
 
 st.sidebar.header("Filtros")
 
@@ -142,28 +142,9 @@ current_row = st.columns(cols_per_row)
 for i, (idx, row) in enumerate(dff.iterrows()):
     col = current_row[i % cols_per_row]
     with col:
-        img_url = row.get("Imagem Capa", "")
-        nome_jogo = row["Nome do Jogo"]
-
-        # Exibe a imagem e o nome como um "card"
-        if img_url:
-            st.markdown(
-                f"""
-                <div style="text-align:center;">
-                    <img src="{img_url}" width="100%" style="border-radius:10px; margin-bottom:8px;">
-                    <h5 style="margin:0; font-size:1em;">{nome_jogo}</h5>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-        else:
-            st.markdown(f"### {nome_jogo}")
-
-        # Botão abaixo do card
+        render_game_thumbnail(row["Nome do Jogo"], row.get("Imagem Capa", ""))
         clicked = st.button("Ver detalhes", key=f"btn_{idx}", use_container_width=True)
         if clicked:
-            st.session_state.selected_idx = idx
             show_game_details(row)
-
     if (i + 1) % cols_per_row == 0:
         current_row = st.columns(cols_per_row)
