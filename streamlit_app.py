@@ -42,6 +42,8 @@ df.columns = [
 
 df = to_numeric(df, ["Idade Mínima", "Mínimo de Jogadores", "Máximo de Jogadores"])
 
+st.set_page_config(page_title="Metagame - Nossa biblioteca de jogos!", page_icon="🎲", layout="wide")
+
 st.title("Bem vindo ao MetaGame - Nossa biblioteca de jogos!")
 
 st.markdown("""
