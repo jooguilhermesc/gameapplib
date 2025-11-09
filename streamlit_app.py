@@ -42,7 +42,7 @@ df.columns = [
 
 df = to_numeric(df, ["Idade Mínima", "Mínimo de Jogadores", "Máximo de Jogadores"])
 
-st.title("Bem ao vindo MetaGame - Nossa biblioteca de jogos!")
+st.title("Bem vindo ao MetaGame - Nossa biblioteca de jogos!")
 
 st.markdown("""
     **Categoria (`dsc_categoria`):**
@@ -83,9 +83,9 @@ sel_tema = multiselect_all("Tema", df["Tema"].unique())
 sel_mantenedor = multiselect_all("Mantenedor", df["Mantenedor"].unique())
 
 # Intervalos com valores distintos
-idade_min, idade_max, _ = range_from_distinct("Idade Mínima (intervalo por valores distintos)", df["Idade Mínima"])
-jmin_min, jmin_max, _ = range_from_distinct("Mínimo de Jogadores (intervalo)", df["Mínimo de Jogadores"])
-jmax_min, jmax_max, _ = range_from_distinct("Máximo de Jogadores (intervalo)", df["Máximo de Jogadores"])
+idade_min, idade_max, _ = range_from_distinct("Idade Mínima", df["Idade Mínima"])
+jmin_min, jmin_max, _ = range_from_distinct("Mínimo de Jogadores", df["Mínimo de Jogadores"])
+jmax_min, jmax_max, _ = range_from_distinct("Máximo de Jogadores", df["Máximo de Jogadores"])
 
 # ===== Aplica filtros =====
 dff = df.copy()
@@ -116,4 +116,4 @@ if jmax_min is not None and jmax_max is not None:
 # ===== Resultado =====
 st.caption(f"Mostrando {len(dff)} de {len(df)} jogos")
 
-st.dataframe(dff, use_container_width=True, hide_index=True)
+st.dataframe(dff, use_container_width=False, hide_index=True)
