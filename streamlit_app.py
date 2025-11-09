@@ -3,6 +3,27 @@ from utils import to_numeric, multiselect_all, range_from_distinct
 import streamlit as st
 import pandas as pd
 
+@st.dialog("📘 Detalhes do Jogo")
+def show_game_details(r):
+    st.subheader(r["Nome do Jogo"])
+    st.markdown(
+        f"""
+**Descrição:** {r['Descrição do Jogo'] or '—'}  
+
+**Categoria:** {r['Categoria'] or '—'}  
+**Subcategoria:** {r['Subcategoria'] or '—'}  
+**Mecânica Principal:** {r['Mecânica Principal'] or '—'}  
+**Tema:** {r['Tema'] or '—'}  
+
+**Idade Mínima:** {int(r['Idade Mínima']) if pd.notna(r['Idade Mínima']) else '—'}  
+**Jogadores:** {int(r['Mínimo de Jogadores']) if pd.notna(r['Mínimo de Jogadores']) else '—'}–{int(r['Máximo de Jogadores']) if pd.notna(r['Máximo de Jogadores']) else '—'}  
+**Mantenedor:** {r['Mantenedor'] or '—'}  
+
+**Nota da Laura:** {r['Nota da Laura'] if pd.notna(r['Nota da Laura']) else '—'}  
+**Nota do João:** {r['Nota do João'] if pd.notna(r['Nota do João']) else '—'}
+        """.strip()
+    )
+
 with open("config.toml", "rb") as f:
     config = tomllib.load(f)
 
@@ -33,6 +54,7 @@ st.set_page_config(page_title="Metagame - Nossa biblioteca de jogos!", page_icon
 st.title("Bem vindo ao MetaGame - Nossa biblioteca de jogos!")
 
 st.markdown("""
+
     **Categoria (`dsc_categoria`):**
     - **Tabuleiro:** Jogos cujo foco principal é o tabuleiro.  
     - **Cartas:** Jogos que giram em torno de cartas como elemento central.  
@@ -104,4 +126,23 @@ if jmax_min is not None and jmax_max is not None:
 # ===== Resultado =====
 st.caption(f"Mostrando {len(dff)} de {len(df)} jogos")
 
-st.dataframe(dff, use_container_width=False, hide_index=True)
+# st.dataframe(dff, use_container_width=False, hide_index=True)
+
+# ---- Lista dinâmica de botões a partir do dff ----
+# Guardamos a seleção em session_state para persistir após o clique
+if "selected_idx" not in st.session_state:
+    st.session_state.selected_idx = None
+
+# Grade de botões (3 colunas por linha, ajuste à vontade)
+cols_per_row = 3
+rows = []
+current_row = st.columns(cols_per_row)
+
+for i, (idx, row) in enumerate(dff.iterrows()):
+    col = current_row[i % cols_per_row]
+    with col:
+        clicked = st.button(row["Nome do Jogo"], key=f"btn_{idx}", use_container_width=True)
+        if clicked:
+            st.session_state.selected_idx = idx
+            # abre o diálogo com as informações do jogo clicado
+            show_game_details(row)
