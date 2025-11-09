@@ -44,7 +44,8 @@ df.columns = [
     "Mantenedor",
     "Descrição do Jogo",
     "Nota da Laura",
-    "Nota do João"
+    "Nota do João",
+    "Imagem Capa"
 ]
 
 df = to_numeric(df, ["Idade Mínima", "Mínimo de Jogadores", "Máximo de Jogadores"])
@@ -141,8 +142,28 @@ current_row = st.columns(cols_per_row)
 for i, (idx, row) in enumerate(dff.iterrows()):
     col = current_row[i % cols_per_row]
     with col:
-        clicked = st.button(row["Nome do Jogo"], key=f"btn_{idx}", use_container_width=True)
+        img_url = row.get("Imagem Capa", "")
+        nome_jogo = row["Nome do Jogo"]
+
+        # Exibe a imagem e o nome como um "card"
+        if img_url:
+            st.markdown(
+                f"""
+                <div style="text-align:center;">
+                    <img src="{img_url}" width="100%" style="border-radius:10px; margin-bottom:8px;">
+                    <h5 style="margin:0; font-size:1em;">{nome_jogo}</h5>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+        else:
+            st.markdown(f"### {nome_jogo}")
+
+        # Botão abaixo do card
+        clicked = st.button("Ver detalhes", key=f"btn_{idx}", use_container_width=True)
         if clicked:
             st.session_state.selected_idx = idx
-            # abre o diálogo com as informações do jogo clicado
             show_game_details(row)
+
+    if (i + 1) % cols_per_row == 0:
+        current_row = st.columns(cols_per_row)
