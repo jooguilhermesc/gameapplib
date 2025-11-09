@@ -1,5 +1,11 @@
+import tomllib
 import streamlit as st
 import pandas as pd
+
+with open("config.toml", "rb") as f:
+    config = tomllib.load(f)
+
+game_csv_path = config["paths"]["game_csv"]
 
 def to_numeric(df, cols):
     for c in cols:
@@ -22,7 +28,7 @@ def range_from_distinct(label, series):
 
 
 
-df = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQG4C5rdmrOOERNB0ICvSSI3GXBICH2z_Vwj-ojGY7l-3PuC9WkvkdLsxFaOMlM7dUp3pqXLQaEh680/pub?gid=0&single=true&output=csv")
+df = pd.read_csv(game_csv_path)
 
 df.columns = [
     "Nome do Jogo",
