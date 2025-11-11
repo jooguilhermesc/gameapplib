@@ -3,27 +3,6 @@ import streamlit as st
 import pandas as pd
 import tomllib
 
-@st.dialog("📘 Detalhes do Jogo")
-def show_game_details(r):
-    st.subheader(r["Nome do Jogo"])
-    st.markdown(
-        f"""
-**Descrição:** {r['Descrição do Jogo'] or '—'}  
-
-**Categoria:** {r['Categoria'] or '—'}  
-**Subcategoria:** {r['Subcategoria'] or '—'}  
-**Mecânica Principal:** {r['Mecânica Principal'] or '—'}  
-**Tema:** {r['Tema'] or '—'}  
-
-**Idade Mínima:** {int(r['Idade Mínima']) if pd.notna(r['Idade Mínima']) else '—'}  
-**Jogadores:** {int(r['Mínimo de Jogadores']) if pd.notna(r['Mínimo de Jogadores']) else '—'}–{int(r['Máximo de Jogadores']) if pd.notna(r['Máximo de Jogadores']) else '—'}  
-**Mantenedor:** {r['Mantenedor'] or '—'}  
-
-**Nota da Laura:** {r['Nota da Laura'] if pd.notna(r['Nota da Laura']) else '—'}  
-**Nota do João:** {r['Nota do João'] if pd.notna(r['Nota do João']) else '—'}
-        """.strip()
-    )
-
 with open("config.toml", "rb") as f:
     config = tomllib.load(f)
 
@@ -54,31 +33,33 @@ st.set_page_config(page_title="Metagame - Nossa biblioteca de jogos!", page_icon
 
 st.title("Bem vindo ao MetaGame - Nossa biblioteca de jogos!")
 
-# st.markdown("""
+@st.dialog("📘 Detalhes do Jogo")
+def show_game_details(r):
+    st.subheader(r["Nome do Jogo"])
+    st.markdown(
+        f"""
 
-#     **Categoria (`dsc_categoria`):**
-#     - **Tabuleiro:** Jogos cujo foco principal é o tabuleiro.  
-#     - **Cartas:** Jogos que giram em torno de cartas como elemento central.  
-#     - **Dados:** Jogos baseados em rolagem de dados.
+        <div style="text-align:center;">
+            <img src="{r['Imagem Capa']}" 
+                width="100" 
+                height="100"
+                style="border-radius:10px;
+                        margin-bottom:8px;
+                        object-fit:cover;
+                        max-height:100px;">
+        </div>
 
-#     **Subcategoria (`dsc_subcategoria`):**
-#     - **Clássico:** Jogos tradicionais, com mecânicas simples.  
-#     - **Cozy:** Jogos leves e divertidos para poucas pessoas.  
-#     - **Dupla:** Projetados exclusivamente para duas pessoas.  
-#     - **Party:** Jogos festivos e sociais, para grupos grandes.  
-#     - **Eurogame:** Jogos modernos com mecânicas estratégicas e pouca sorte envolvida.  
-#     - **RPG:** Jogos com narrativa ou progressão de personagem, mas sem mestre fixo.
+**Descrição:** {r['Descrição do Jogo'] or '—'}  
+**Categoria:** {r['Categoria'] or '—'}  
+**Subcategoria:** {r['Subcategoria'] or '—'}  
+**Mecânica Principal:** {r['Mecânica Principal'] or '—'}  
+**Tema:** {r['Tema'] or '—'}  
 
-#     **Mecânica Principal (`dsc_mecanica_principal`):**
-#     - **Alocação de Recursos:** Envolve gerenciar e distribuir recursos limitados.  
-#     - **Apostas:** Baseados em sorte, blefe ou risco calculado.  
-#     - **Deck Building:** Construção e otimização de baralhos.  
-#     - **Dungeon Crawler:** Exploração de tabuleiros e combate em fases.  
-#     - **Gerenciamento de Mãos:** Combinações estratégicas de cartas ou peças.  
-#     - **Quebra-Cabeça:** Requer raciocínio lógico, memória ou reflexos.  
-#     - **Quiz:** Perguntas e respostas como base da jogabilidade.  
-#     - **Vários:** Mistura de várias mecânicas dentro de um mesmo jogo.
-#     """)
+**Idade Mínima:** {int(r['Idade Mínima']) if pd.notna(r['Idade Mínima']) else '—'}  
+**Jogadores:** {int(r['Mínimo de Jogadores']) if pd.notna(r['Mínimo de Jogadores']) else '—'}–{int(r['Máximo de Jogadores']) if pd.notna(r['Máximo de Jogadores']) else '—'}  
+**Mantenedor:** {r['Mantenedor'] or '—'} 
+        """.strip(), unsafe_allow_html=True
+)
 
 st.sidebar.header("Filtros")
 

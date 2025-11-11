@@ -1,5 +1,6 @@
 .streamlit/secrets.toml
-*.toml
+config.toml
+teste.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
