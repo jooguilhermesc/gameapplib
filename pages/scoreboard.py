@@ -107,25 +107,10 @@ def gerar_imagem_resultado(
         bbox = font.getbbox(text)
         return bbox[2] - bbox[0], bbox[3] - bbox[1]
 
-    # ------ fonte com suporte a acentos ------
-    def load_font(size: int):
-        for fname in [
-            "DejaVuSans-Bold.ttf",
-            "DejaVuSans.ttf",
-            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        ]:
-            try:
-                return ImageFont.truetype(fname, size=size)
-            except:
-                pass
-        st.write(f"Falhou ao carregar fonte")
-        return ImageFont.load_default()
-
     # ------ tamanhos proporcionais à LARGURA ------
-    font_title  = ImageFont.truetype(r'C:\Users\System-Pc\Desktop\arial.ttf', size=30)   # título
-    font_winner = ImageFont.truetype(r'C:\Users\System-Pc\Desktop\arial.ttf', size=50)    # vencedor
-    font_score  = ImageFont.truetype(r'C:\Users\System-Pc\Desktop\arial.ttf', size=30)    # placar
+    font_title  = ImageFont.truetype(r'pages/font/PressStart2P-Regular.ttf', size=30)   # título
+    font_winner = ImageFont.truetype(r'pages/font/PressStart2P-Regular.ttf', size=20)    # vencedor
+    font_score  = ImageFont.truetype(r'pages/font/PressStart2P-Regular.ttf', size=20)    # placar
 
     thumb_size  = int(W * 0.8)  # tamanho da capa do jogo
 
@@ -141,7 +126,7 @@ def gerar_imagem_resultado(
     # ------------------------------------------------------------
     # 2. Capa do jogo abaixo do troféu
     # ------------------------------------------------------------
-    trophy_x = int(W * 0.13)
+    trophy_x = int(W * 0.35)
     trophy_y = int(H * 0.25)
 
     if capa_url:
@@ -170,8 +155,8 @@ def gerar_imagem_resultado(
     txt = vencedor or "Sem vencedor"
     tw, th = measure(txt, font_winner)
 
-    nome_x = trophy_x + int(W * 0.30)
-    nome_y = trophy_y + int(H * 0.05)
+    nome_x = trophy_x + int(W * 0.15)
+    nome_y = trophy_y + int(H * 0.03)
 
     draw.text((nome_x, nome_y), txt, font=font_winner, fill="black")
 
