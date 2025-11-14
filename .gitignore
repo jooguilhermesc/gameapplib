@@ -1,6 +1,9 @@
 .streamlit/secrets.toml
 config.toml
 teste.txt
+lista_jogos.txt
+assets/
+assets.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
