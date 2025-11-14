@@ -108,7 +108,7 @@ def gerar_imagem_resultado(
         return bbox[2] - bbox[0], bbox[3] - bbox[1]
 
     # ------ tamanhos proporcionais à LARGURA ------
-    font_title  = ImageFont.truetype(r'pages/font/PressStart2P-Regular.ttf', size=30)   # título
+    font_title  = ImageFont.truetype(r'pages/font/PressStart2P-Regular.ttf', size=26)   # título
     font_winner = ImageFont.truetype(r'pages/font/PressStart2P-Regular.ttf', size=20)    # vencedor
     font_score  = ImageFont.truetype(r'pages/font/PressStart2P-Regular.ttf', size=20)    # placar
 
@@ -138,7 +138,7 @@ def gerar_imagem_resultado(
             else:
                 capa = Image.open(capa_url).convert("RGBA")
 
-            capa.thumbnail((thumb_size, thumb_size), Image.Resampling.LANCZOS)
+            capa.thumbnail((150, 150), Image.Resampling.LANCZOS)
             capa_x = trophy_x
             capa_y = trophy_y + int(H * 0.12)
             base.paste(capa, (capa_x, capa_y), capa)
